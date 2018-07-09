@@ -9,4 +9,4 @@ sudo apt-get dist-upgrade -y
 
 ## Compatibility
 
-- **Solus Project**
+- **Ubuntu 16.04**
