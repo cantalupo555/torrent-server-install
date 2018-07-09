@@ -79,3 +79,7 @@ echo -e ' [Unit]\n Description=qBittorrent Daemon Service\n After=network.target
 sudo systemctl daemon-reload
 sudo systemctl enable qbittorrent
 sudo systemctl start qbittorrent
+echo -e ' [Unit]\n Description=rTorrent Daemon Service\n After=network.target\n \n [Service]\n User=root\n ExecStart=/usr/bin/rtorrent\n ExecStop=/usr/bin/killall -w rtorrent\n \n [Install]\n WantedBy=multi-user.target'| sudo tee /etc/systemd/system/rtorrent.service
+sudo systemctl daemon-reload
+sudo systemctl enable rtorrent
+sudo systemctl start rtorrent
