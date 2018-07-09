@@ -1,5 +1,7 @@
 # torrent-server-install
 
+With this script you will install ruTorrent, qBittorrent, proFTPd, vnStat and Apache.
+
 First, update the system:
 
 ```bash
