@@ -16,7 +16,7 @@ sudo apt-get autoremove -y
 sudo apt-get install software-properties-common -y
 sudo add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y
 sudo apt-get update
-sudo apt-get install proftpd apache2 curl php libapache2-mod-php php-mcrypt php-mysql php7.0-zip php-curl php-gd php-mbstring php-mcrypt php-xml php-xmlrpc rtorrent qbittorrent qbittorrent-nox screen bmon htop --allow-unauthenticated -y
+sudo apt-get install proftpd apache2 curl php libapache2-mod-php php-mysql php-curl php-gd php-mbstring php-xml php-xmlrpc rtorrent qbittorrent qbittorrent-nox screen bmon htop --allow-unauthenticated -y
 
 # Config Web
 sudo apache2ctl configtest
