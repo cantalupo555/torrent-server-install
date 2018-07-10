@@ -6,7 +6,7 @@ sudo apt-get autoremove -y
 sudo apt-get install software-properties-common -y
 sudo add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y
 sudo apt-get update
-sudo apt-get install apache2 curl php libapache2-mod-php php-mcrypt php-mysql php7.0-zip php-curl php-gd php-mbstring php-mcrypt php-xml php-xmlrpc rtorrent proftpd qbittorrent qbittorrent-nox screen-y
+sudo apt-get install apache2 curl php libapache2-mod-php php-mcrypt php-mysql php7.0-zip php-curl php-gd php-mbstring php-mcrypt php-xml php-xmlrpc rtorrent proftpd qbittorrent qbittorrent-nox screen -y
 
 # Config Web
 sudo apache2ctl configtest
@@ -76,5 +76,6 @@ chown -R 33:33 html/
 # Daemon
 cd ~
 echo -e ' [Unit]\n Description=qBittorrent Daemon Service\n After=network.target\n \n [Service]\n User=downloads\n ExecStart=/usr/bin/qbittorrent-nox\n ExecStop=/usr/bin/killall -w qbittorrent-nox\n \n [Install]\n WantedBy=multi-user.target'| sudo tee /etc/systemd/system/qbittorrent.service
-echo -e ' [Unit]\n Description=rTorrent Daemon Service\n After=network.target\n \n [Service]\n User=downloads\n ExecStart=/usr/bin/rtorrent\n ExecStop=/usr/bin/killall -w rtorrent\n \n [Install]\n WantedBy=multi-user.target'| sudo tee /etc/systemd/system/rtorrent.service
+echo -e ' [Unit]\n Description=rTorrent Daemon Service\n After=network.target\n \n [Service]\n User=downloads\n ExecStart=/usr/bin/screen -d -m -S rtorrent /usr/bin/rtorrent\n #ExecStop=/usr/bin/screen -X -S rtorrent quit\n \n [Install]\n WantedBy=multi-user.target'| sudo tee /etc/systemd/system/rtorrent.service
 sudo systemctl daemon-reload && sudo systemctl enable qbittorrent && sudo systemctl start qbittorrent && sudo systemctl enable rtorrent && sudo systemctl start rtorrent
+
