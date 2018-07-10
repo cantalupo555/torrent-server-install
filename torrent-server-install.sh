@@ -16,7 +16,7 @@ sudo apt-get autoremove -y
 sudo apt-get install software-properties-common -y
 sudo add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y
 sudo apt-get update
-sudo apt-get install apache2 curl php libapache2-mod-php php-mcrypt php-mysql php7.0-zip php-curl php-gd php-mbstring php-mcrypt php-xml php-xmlrpc rtorrent proftpd qbittorrent qbittorrent-nox screen bmon htop --allow-unauthenticated -y
+sudo apt-get install apache2 curl php libapache2-mod-php php-mcrypt php-mysql php7.0-zip php-curl php-gd php-mbstring php-mcrypt php-xml php-xmlrpc rtorrent proftpd qbittorrent qbittorrent-nox screen bmon htop sudo --allow-unauthenticated -y
 
 # Config Web
 sudo apache2ctl configtest
@@ -37,14 +37,11 @@ mv rtorrent.rc .rtorrent.rc
 mkdir /home/rtorrent
 mkdir /home/rtorrent/Downloads
 mkdir /home/rtorrent/.session
-mkdir /home/rtorrent/watch
 
 # User proFTPd
 #sudo adduser downloads --home=/home/rtorrent/Downloads --shell=/bin/false
-sudo useradd -m $user --home=/home/rtorrent/Downloads --shell=/bin/false
-sudo useradd -m quser --home=/home/rtorrent --shell=/bin/false
+sudo useradd -m $user --home=/home/rtorrent/ --shell=/bin/false
 echo $user:$pass | chpasswd
-sudo chown quser:quser /home/rtorrent/
 
 # Config proFTPd
 cd /etc/proftpd/
@@ -89,11 +86,11 @@ chown -R 33:33 html/
 
 # Daemon
 cd ~
-echo -e '[Unit]\nDescription=qBittorrent Daemon Service\nAfter=network.target\n\n[Service]\nUser=quser\nExecStart=/usr/bin/qbittorrent-nox\nExecStop=/usr/bin/killall -w qbittorrent-nox\n\n[Install]\nWantedBy=multi-user.target'| sudo tee /etc/systemd/system/qbittorrent.service
+echo -e "[Unit]\nDescription=qBittorrent Daemon Service\nAfter=network.target\n\n[Service]\nUser=$user\nExecStart=/usr/bin/qbittorrent-nox\nExecStop=/usr/bin/killall -w qbittorrent-nox\n\n[Install]\nWantedBy=multi-user.target"| sudo tee /etc/systemd/system/qbittorrent.service
 echo -e "[Unit]\nDescription=rTorrent Daemon Service\nAfter=network.target\n\n[Service]\nUser=$user\nExecStart=/usr/bin/screen -d -m -S rtorrent /usr/bin/rtorrent\n#ExecStop=/usr/bin/screen -X -S rtorrent quit\n\n[Install]\n WantedBy=multi-user.target"| sudo tee /etc/systemd/system/rtorrent.service
 sudo systemctl daemon-reload && sudo systemctl enable qbittorrent && sudo systemctl start qbittorrent && sudo systemctl enable rtorrent && sudo systemctl start rtorrent
-echo -e '#! /bin/sh\n\n### BEGIN INIT INFO\n# Provides:           myService\n# Required-Start:     $local_fs $remote_fs $network $syslog $netdaemons\n# Required-Stop:      $local_fs $remote_fs\n# Default-Start:      2 3 4 5\n# Default-Stop:       0 1 6\n# Short-Description:  Example of init service.\n# Description:\n#  Long description of my service.\n### END INIT INFO\n\n# Actions provided to make it LSB-compliant\ncase "$1" in\n  start)\n    echo "Starting myService"\n    sudo /usr/bin/screen -d -m -S rtorrent /usr/bin/rtorrent\n    ;;\n  stop)\n    echo "Stopping script myService"\n    sudo /usr/bin/screen -X -S rtorrent quit\n    ;;\n  restart)\n    echo "Restarting script myService"\n    sudo /usr/bin/screen -X -S rtorrent quit && sudo /usr/bin/screen -d -m -S rtorrent /usr/bin/rtorrent\n    ;;\n  force-reload)\n    echo "Reloading script myService"\n    #Insert your reload routine here\n    ;;\n  status)\n    echo "Status of script myService"\n    #Insert your stop routine here\n    ;;\n  *)\n    echo "Usage: /etc/init.d/myService {start|stop|restart|force-reload|status}"\n    exit 1\n    ;;\nesac\n\nexit 0'| sudo tee /etc/init.d/myService
-sudo chmod +x /etc/init.d/myService && sudo chmod 777 /etc/init.d/myService && update-rc.d myService defaults
+echo -e '#! /bin/sh\n\n### BEGIN INIT INFO\n# Provides:           unitr\n# Required-Start:     $local_fs $remote_fs $network $syslog $netdaemons\n# Required-Stop:      $local_fs $remote_fs\n# Default-Start:      2 3 4 5\n# Default-Stop:       0 1 6\n# Short-Description:  Example of init service.\n# Description:\n#  Long description of my service.\n### END INIT INFO\n\n# Actions provided to make it LSB-compliant\ncase "$1" in\n  start)\n    echo "Starting unitr"\n    sudo /usr/bin/screen -d -m -S rtorrent /usr/bin/rtorrent\n    ;;\n  stop)\n    echo "Stopping script unitr"\n    sudo /usr/bin/screen -X -S rtorrent quit\n    ;;\n  restart)\n    echo "Restarting script unitr"\n    sudo /usr/bin/screen -X -S rtorrent quit && sudo /usr/bin/screen -d -m -S rtorrent /usr/bin/rtorrent\n    ;;\n  force-reload)\n    echo "Reloading script unitr"\n    #Insert your reload routine here\n    ;;\n  status)\n    echo "Status of script unitr"\n    #Insert your stop routine here\n    ;;\n  *)\n    echo "Usage: /etc/init.d/unitr {start|stop|restart|force-reload|status}"\n    exit 1\n    ;;\nesac\n\nexit 0'| sudo tee /etc/init.d/unitr
+sudo chmod +x /etc/init.d/unitr && sudo chmod 777 /etc/init.d/unitr && update-rc.d unitr defaults
 clear
 echo "Installation Complete" && echo "By: @cantalupo555" && echo ""
 echo "		Reboot..."
