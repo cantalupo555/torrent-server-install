@@ -45,12 +45,18 @@ sudo useradd -m $user --home=/home/rtorrent/Downloads --shell=/bin/false
 sudo useradd -m quser --home=/home/rtorrent --shell=/bin/false
 echo $user:$pass | chpasswd
 
-
 # Config proFTPd
 cd /etc/proftpd/
 echo "DefaultRoot ~" >> proftpd.conf
 echo "RequireValidShell off" >> proftpd.conf
 echo "CreateHome on" >> proftpd.conf
+echo "" >> proftpd.conf
+echo "<Directory /home/*>" >> proftpd.conf
+echo "        HideFiles (^\..*|\.sh$)" >> proftpd.conf
+echo "        <Limit ALL>" >> proftpd.conf
+echo "        IgnoreHidden On" >> proftpd.conf
+echo "        </Limit>" >> proftpd.conf
+echo "</Directory>" >> proftpd.conf
 sudo /etc/init.d/proftpd restart
 echo "* * * * * root chown -R $user:$user /home/rtorrent/Downloads" >> /etc/crontab
 

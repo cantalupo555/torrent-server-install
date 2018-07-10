@@ -5,7 +5,6 @@ With this script you will install:
 - **qBittorrent**
 - **proFTPd**
 - **vnStat**
-- **Apache**
 
 First, update the system:
 
