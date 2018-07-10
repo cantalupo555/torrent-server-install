@@ -2,8 +2,11 @@
 # cantalupo555
 
 #User e Password
+echo "@cantalupo555"
+echo ""
 echo "Digite o nome de usuário:"
 read user
+echo ""
 echo "Digite a senha para o usuário"
 read pass
 
