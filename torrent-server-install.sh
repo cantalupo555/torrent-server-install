@@ -40,7 +40,7 @@ fi
 
 # User e Password
 echo ""
-echo "@cantalupo555"
+echo "By: @cantalupo555"
 echo ""
 echo "Enter the name for the user:"
 read user
@@ -268,13 +268,14 @@ echo -e '#! /bin/sh\n\n### BEGIN INIT INFO\n# Provides:           unitr\n# Requi
 sudo chmod +x /etc/init.d/unitr&&sudo chmod 777 /etc/init.d/unitr&&update-rc.d unitr defaults
 clear
 echo "Installation Complete"&&echo "By: @cantalupo555"&&echo ""
+echo "############################################"
 echo "ruTorrent: http://$PUBLIC_IP/rutorrent"
 echo "qBittorrent: http://$PUBLIC_IP:8080"
 echo "Downloads Web: http://$PUBLIC_IP/downloads"
 echo "Network Status: http://$PUBLIC_IP/status"
-echo "FTP:"
-echo "Host: $PUBLIC_IP Port: 21"
+echo "FTP>>> Host: $PUBLIC_IP Port: 21"
 echo "User: $user Password: $pass"
+echo "############################################"
 echo ""
 echo "		Reboot..."
 echo "			Reboot..."
