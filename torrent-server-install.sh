@@ -124,16 +124,9 @@ echo "* * * * * root chown -R $user:$user /home/rtorrent/Downloads" >> /etc/cron
 
 # Intall and Config ruTorrent
 cd /var/www/html
-wget http://80.211.146.153/rutorrent-3.6.tar.gz -O rutorrent-3.6.tar.gz
-tar -xvf rutorrent-3.6.tar.gz
-rm rutorrent-3.6.tar.gz
-cd rutorrent
-wget http://80.211.146.153/plugins-3.6.tar.gz -O plugins-3.6.tar.gz
-tar -xvf plugins-3.6.tar.gz
-rm plugins-3.6.tar.gz
-cd plugins
-rm -rf screenshots
-cd ../..
+wget https://github.com/Novik/ruTorrent/archive/master.zip -O rutorrent.zip
+unzip rutorrent.zip
+rm rutorrent.zip
 ln -s /home/rtorrent/Downloads downloads
 
 # Password in directory
