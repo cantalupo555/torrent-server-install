@@ -22,7 +22,7 @@ elif [ -f /etc/os-release ]; then
 fi
 ARCH=$(uname -m)
 
-echo "Detected : $OS  $VER  $ARCH"&&repo='add-apt-repository'
+echo "Detected : $OS  $VER  $ARCH"&&r='add-apt-repository'
 
 if [[ "$OS" = "Ubuntu" && ("$VER" = "16.04" || "$VER" = "18.04" ) ]] ; then
     echo "Ok."
@@ -43,10 +43,10 @@ fi
 echo ""
 echo "By: @cantalupo555"
 echo ""
-echo "Enter the name for the user:"
+echo -e " \033[42;1;37mEnter the name for the user:\033[0m"
 read user
 echo ""
-echo "Enter the password for the user:"
+echo -e " \033[42;1;37mEnter the password for the user:\033[0m"
 read pass
 
 extern_ip="$(wget -qO- http://api.sentora.org/ip.txt)"
@@ -62,11 +62,11 @@ sudo apt-get autoremove -y
 time_type=$time_type
 sudo $all software-properties-common -y
 tx_color=$tx_color
-sudo $repo ppa:qbittorrent-team/qbittorrent-stable -y
+sudo $r ppa:qbittorrent-team/qbittorrent-stable -y
 rx_color=$rx_color
-sudo $repo ppa:ondrej/apache2 ppa:ondrej/php -y
+sudo $r ppa:ondrej/apache2 ppa:ondrej/php -y
 theme=$theme
-sudo $repo ppa:ondrej/php -y&&sudo apt-get update
+sudo $r ppa:ondrej/php -y&&sudo apt-get update
 precision=$precision
 sudo $all proftpd apache2 curl php libapache2-mod-php php-mysql php-zip php-intl php-curl php-gd php-mbstring php-xml php-xmlrpc rtorrent qbittorrent qbittorrent-nox screen bmon htop make gcc libc6-dev unzip rar unrar mediainfo --allow-unauthenticated -y
 date_format=$date_format
