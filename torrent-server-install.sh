@@ -285,7 +285,7 @@ sudo systemctl daemon-reload&&sudo systemctl enable qbittorrent&&sudo systemctl 
 echo -e '#! /bin/sh\n\n### BEGIN INIT INFO\n# Provides:           unitr\n# Required-Start:     $local_fs $remote_fs $network $syslog $netdaemons\n# Required-Stop:      $local_fs $remote_fs\n# Default-Start:      2 3 4 5\n# Default-Stop:       0 1 6\n# Short-Description:  Example of init service.\n# Description:\n#  Long description of my service.\n### END INIT INFO\n\n# Actions provided to make it LSB-compliant\ncase "$1" in\n  start)\n    echo "Starting unitr"\n    sudo /usr/bin/screen -d -m -S rtorrent /usr/bin/rtorrent\n    ;;\n  stop)\n    echo "Stopping script unitr"\n    sudo /usr/bin/screen -X -S rtorrent quit\n    ;;\n  restart)\n    echo "Restarting script unitr"\n    sudo /usr/bin/screen -X -S rtorrent quit && sudo /usr/bin/screen -d -m -S rtorrent /usr/bin/rtorrent\n    ;;\n  force-reload)\n    echo "Reloading script unitr"\n    #Insert your reload routine here\n    ;;\n  status)\n    echo "Status of script unitr"\n    #Insert your stop routine here\n    ;;\n  *)\n    echo "Usage: /etc/init.d/unitr {start|stop|restart|force-reload|status}"\n    exit 1\n    ;;\nesac\n\nexit 0'| sudo tee /etc/init.d/unitr
 sudo chmod +x /etc/init.d/unitr&&sudo chmod 777 /etc/init.d/unitr&&update-rc.d unitr defaults
 clear
-echo "Installation Complete"&&echo "By: @cantalupo555"&&echo ""
+echo -e " \033[40;1;37mInstallation Complete\033[0m"&&echo "By: @cantalupo555"&&echo ""
 echo -e "\e[1;33m############################################\e[0m"
 echo -e " \033[40;1;37mruTorrent: http://$PUBLIC_IP/rutorrent\033[0m"
 echo -e " \033[41;1;37mqBittorrent: http://$PUBLIC_IP:8080\033[0m"
