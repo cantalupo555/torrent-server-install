@@ -31,7 +31,6 @@ else
     exit 1
 fi
 
-
 # root?
 if [ $UID -ne 0 ]; then
     echo "Install failed: you must be logged in as 'root' to install."
@@ -64,7 +63,7 @@ sudo $all software-properties-common -y
 tx_color=$tx_color
 sudo $r ppa:qbittorrent-team/qbittorrent-stable -y
 rx_color=$rx_color
-sudo $r ppa:ondrej/apache2 ppa:ondrej/php -y
+sudo $r ppa:ondrej/apache2 -y
 theme=$theme
 sudo $r ppa:ondrej/php -y&&sudo apt-get update
 precision=$precision
@@ -157,7 +156,7 @@ mkdir /var/www/html/status&&echo -e 'AuthType Basic\nAuthName cantalupo555\nAuth
 cd ~
 wget  wget https://sourceforge.net/projects/jsvnstat/files/latest/download -O jsvnstat.zip
 unzip jsvnstat.zip&&mv jsvnstat/ 1/&&mv 1/ /var/www/html/status/
-echo -e "<?php
+echo -e '<?php
 	$interface = 'eth0';	    /* Default interface to monitor (e.g. eth0 or wifi0), leave empty for first one */
 	$graph_type = 'lines';	/* Default look of the graph (one of: lines, bars)*/
 	$time_type = 'days';	/* Default time frame (one of: 'hours', 'days', 'months', 'top10') */
@@ -177,7 +176,7 @@ echo -e "<?php
 		'interface' => true,
 		'theme' => true
 	);
-?>"| sudo tee $statusdir/1/settings.php
+?>'| sudo tee $statusdir/1/settings.php
 rm jsvnstat.zip
 wget https://github.com/DASPRiD/vnstat-php/archive/master.zip -O vnStat-PHP.zip
 unzip vnStat-PHP.zip&&mv vnstat-php-master/ 2/&&mv 2/ /var/www/html/status/
@@ -192,7 +191,7 @@ return [
 rm vnStat-PHP.zip
 wget https://github.com/bjd/vnstat-php-frontend/archive/master.zip -O vnstat_php_frontend.zip
 unzip vnstat_php_frontend.zip&&mv vnstat-php-frontend-master/ 3/&&mv 3/ /var/www/html/status/
-echo -e "<?php
+echo -e '<?php
     //
     // vnStat PHP frontend (c)2006-2010 Bjorge Dijkstra (bjd@jooz.net)
     //
@@ -272,7 +271,7 @@ echo -e "<?php
     // SVG Depth scaling factor
     define('SVG_DEPTH_SCALING', 1);
 
-?>"| sudo tee $statusdir/3/config.php
+?>'| sudo tee $statusdir/3/config.php
 rm vnstat_php_frontend.zip
 cd /var/www/
 chown -R 33:33 html/
@@ -285,15 +284,15 @@ sudo systemctl daemon-reload&&sudo systemctl enable qbittorrent&&sudo systemctl 
 echo -e '#! /bin/sh\n\n### BEGIN INIT INFO\n# Provides:           unitr\n# Required-Start:     $local_fs $remote_fs $network $syslog $netdaemons\n# Required-Stop:      $local_fs $remote_fs\n# Default-Start:      2 3 4 5\n# Default-Stop:       0 1 6\n# Short-Description:  Example of init service.\n# Description:\n#  Long description of my service.\n### END INIT INFO\n\n# Actions provided to make it LSB-compliant\ncase "$1" in\n  start)\n    echo "Starting unitr"\n    sudo /usr/bin/screen -d -m -S rtorrent /usr/bin/rtorrent\n    ;;\n  stop)\n    echo "Stopping script unitr"\n    sudo /usr/bin/screen -X -S rtorrent quit\n    ;;\n  restart)\n    echo "Restarting script unitr"\n    sudo /usr/bin/screen -X -S rtorrent quit && sudo /usr/bin/screen -d -m -S rtorrent /usr/bin/rtorrent\n    ;;\n  force-reload)\n    echo "Reloading script unitr"\n    #Insert your reload routine here\n    ;;\n  status)\n    echo "Status of script unitr"\n    #Insert your stop routine here\n    ;;\n  *)\n    echo "Usage: /etc/init.d/unitr {start|stop|restart|force-reload|status}"\n    exit 1\n    ;;\nesac\n\nexit 0'| sudo tee /etc/init.d/unitr
 sudo chmod +x /etc/init.d/unitr&&sudo chmod 777 /etc/init.d/unitr&&update-rc.d unitr defaults
 clear
-echo -e " \033[40;1;37mInstallation Complete\033[0m"&&echo "By: @cantalupo555"&&echo ""
+echo -e " \033[1;34mInstallation Complete\033[0m"&&echo "By: @cantalupo555"&&echo ""
 echo -e "\e[1;33m############################################\e[0m"
-echo -e " \033[40;1;37mruTorrent: http://$PUBLIC_IP/rutorrent\033[0m"
+echo -e " \033[1;34mruTorrent: http://$PUBLIC_IP/rutorrent\033[0m"
 echo -e " \033[41;1;37mqBittorrent: http://$PUBLIC_IP:8080\033[0m"
-echo -e " \033[40;1;37mqBittorrent User: admin Password: adminadmin\033[0m"
+echo -e " \033[1;34mqBittorrent User: admin Password: adminadmin\033[0m"
 echo -e " \033[41;1;37mDownloads Web: http://$PUBLIC_IP/downloads\033[0m"
-echo -e " \033[40;1;37mNetwork Status: http://$PUBLIC_IP/status\033[0m"
+echo -e " \033[1;34mNetwork Status: http://$PUBLIC_IP/status\033[0m"
 echo -e " \033[41;1;37mFTP >>> Host: $PUBLIC_IP Port: 21\033[0m"
-echo -e " \033[40;1;37mUser: $user Password: $pass\033[0m"
+echo -e " \033[1;34mUser: $user Password: $pass\033[0m"
 echo -e "\e[1;33m############################################\e[0m"
 echo ""
 echo "		Reboot..."
