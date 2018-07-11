@@ -8,10 +8,10 @@ clear
 echo ""
 echo "@cantalupo555"
 echo ""
-echo "Digite o nome de usuário:"
+echo "Enter the name for the user:"
 read user
 echo ""
-echo "Digite a senha para o usuário"
+echo "Enter the password for the user:"
 read pass
 
 # Dependencies
@@ -229,6 +229,14 @@ echo -e '#! /bin/sh\n\n### BEGIN INIT INFO\n# Provides:           unitr\n# Requi
 sudo chmod +x /etc/init.d/unitr&&sudo chmod 777 /etc/init.d/unitr&&update-rc.d unitr defaults
 clear
 echo "Installation Complete"&&echo "By: @cantalupo555"&&echo ""
+echo "ruTorrent: http://IP/rutorrent"
+echo "qBittorrent: http://IP:8080"
+echo "Downloads Web: http://IP/downloads"
+echo "Network Status: http://IP/status"
+echo "FTP:"
+echo "Host: IP Port: 21"
+echo "User: $user Password: $pass"
+echo ""
 echo "		Reboot..."
 echo "			Reboot..."
 echo "				Reboot..."
