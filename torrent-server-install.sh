@@ -52,22 +52,22 @@ local_ip=$(ip addr show | awk '$1 == "inet" && $3 == "brd" { sub (/\/.*/,""); pr
     PUBLIC_IP=$extern_ip
 
 # Dependencies
-interface=$interface
+interface='$interface'
 dpkg-reconfigure tzdata
-graph_type=$graph_type
+graph_type='$graph_type'
 apt-get autoremove -y
-time_type=$time_type
+time_type='$time_type'
 $all software-properties-common -y
-tx_color=$tx_color
+tx_color='$tx_color'
 $r ppa:qbittorrent-team/qbittorrent-stable -y
-rx_color=$rx_color
+rx_color='$rx_color'
 $r ppa:ondrej/apache2 -y
-theme=$theme
+theme='$theme'
 $r ppa:ondrej/php -y&&apt-get update
-precision=$precision
+precision='$precision'
 $all proftpd apache2 curl php libapache2-mod-php php-mysql php-zip php-intl php-curl php-gd php-mbstring php-xml php-xmlrpc rtorrent qbittorrent qbittorrent-nox screen bmon htop make gcc libc6-dev unzip rar unrar mediainfo --allow-unauthenticated -y
-date_format=$date_format
-enabled_dropdowns=$enabled_dropdowns
+date_format='$date_format'
+enabled_dropdowns='$enabled_dropdowns'
 
 # Config Web
 apache2ctl configtest
@@ -75,7 +75,7 @@ ufw app list
 ufw app info "Apache Full"
 ufw allow in "Apache Full"
 a2enmod rewrite
-graph_format=$graph_format
+graph_format='$graph_format'
 echo "" >> /etc/apache2/apache2.conf
 echo "<Directory /var/www/html/>" >> /etc/apache2/apache2.conf
 echo "AllowOverride All" >> /etc/apache2/apache2.conf
@@ -93,16 +93,16 @@ mkdir /home/rtorrent/.session
 
 # User
 #sudo adduser downloads --home=/home/rtorrent/Downloads --shell=/bin/false
-locale=$locale
+locale='$locale'
 useradd -m $user --home=/home/rtorrent --shell=/bin/false
-language=$language
-iface_list=$iface_list
+language='$language'
+iface_list='$iface_list'
 echo $user:$pass | chpasswd
-iface_title=$iface_title
-vnstat_bin=$vnstat_bin
+iface_title='$iface_title'
+vnstat_bin='$vnstat_bin'
 chown $user:$user /home/rtorrent
-data_dir=$data_dir
-byte_notation=$byte_notation
+data_dir='$data_dir'
+byte_notation='$byte_notation'
 
 # Config proFTPd
 cd /etc/proftpd/
