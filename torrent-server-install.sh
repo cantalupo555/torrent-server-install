@@ -33,6 +33,7 @@ echo "" >> /etc/apache2/apache2.conf
 echo "<Directory /var/www/html/>" >> /etc/apache2/apache2.conf
 echo "AllowOverride All" >> /etc/apache2/apache2.conf
 echo "</Directory>" >> /etc/apache2/apache2.conf
+statusdir=/var/www/html/status
 service apache2 restart
 
 # Config rTorrent
@@ -99,12 +100,122 @@ mkdir /var/www/html/status&&echo -e 'AuthType Basic\nAuthName cantalupo555\nAuth
 cd ~
 wget  wget https://sourceforge.net/projects/jsvnstat/files/latest/download -O jsvnstat.zip
 unzip jsvnstat.zip&&mv jsvnstat/ 1/&&mv 1/ /var/www/html/status/
+echo -e "<?php
+	$interface = 'eth0';	    /* Default interface to monitor (e.g. eth0 or wifi0), leave empty for first one */
+	$graph_type = 'lines';	/* Default look of the graph (one of: lines, bars)*/
+	$time_type = 'days';	/* Default time frame (one of: 'hours', 'days', 'months', 'top10') */
+	$tx_color = '#00ff00';	/* TX graph color, default is #00ff00 */
+	$rx_color = '#ff0000';	/* RX graph color, default is #ff0000 */
+	$theme = 'default';     /* Default CSS theme to use (one of: 'default', 'nox') */
+	$precision = 2;		    /* Number of decimal digits to display in table, default is 2 (e.g. 2 = 0.00, 3 = 0.000, etc...) */
+	//date_default_timezone_set('Europe/Berlin'); // depending on your php settings you might want to explicitly set this to your TZ
+	$date_format = array(   /* date formats shown in tables and sidebar, see php's date() for reference */
+		'hours' => 'H:00',
+		'days'  => 'D, d.m.Y',
+		'months'=> 'M Y',
+		'top10' => 'd.m.Y',
+		'uptime'=> 'd.m.Y, H:i'
+	);
+	$enabled_dropdowns = array(
+		'interface' => true,
+		'theme' => true
+	);
+?>"| sudo tee $statusdir/1/settings.php
 rm jsvnstat.zip
 wget https://github.com/DASPRiD/vnstat-php/archive/master.zip -O vnStat-PHP.zip
 unzip vnStat-PHP.zip&&mv vnstat-php-master/ 2/&&mv 2/ /var/www/html/status/
+echo -e "<?php
+return [
+    'interfaces' => [
+        // You can list any number of interfaces here. The top interface is the default one. When no interface is
+        // defined (or this config file was not copied to "config.php"), the default interface is used.
+        'eth0',
+    ],
+];"| sudo tee $statusdir/2/config.php
 rm vnStat-PHP.zip
 wget https://github.com/bjd/vnstat-php-frontend/archive/master.zip -O vnstat_php_frontend.zip
 unzip vnstat_php_frontend.zip&&mv vnstat-php-frontend-master/ 3/&&mv 3/ /var/www/html/status/
+echo -e "<?php
+    //
+    // vnStat PHP frontend (c)2006-2010 Bjorge Dijkstra (bjd@jooz.net)
+    //
+    // This program is free software; you can redistribute it and/or modify
+    // it under the terms of the GNU General Public License as published by
+    // the Free Software Foundation; either version 2 of the License, or
+    // (at your option) any later version.
+    //
+    // This program is distributed in the hope that it will be useful,
+    // but WITHOUT ANY WARRANTY; without even the implied warranty of
+    // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    // GNU General Public License for more details.
+    //
+    // You should have received a copy of the GNU General Public License
+    // along with this program; if not, write to the Free Software
+    // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    //
+    //
+    // see file COPYING or at http://www.gnu.org/licenses/gpl.html
+    // for more information.
+    //
+    error_reporting(E_ALL | E_NOTICE);
+
+    //
+    // configuration parameters
+    //
+    // edit these to reflect your particular situation
+    //
+    $locale = 'en_US.UTF-8';
+    $language = 'en';
+
+    // Set local timezone
+    // date_default_timezone_set("Europe/Amsterdam");
+
+    // list of network interfaces monitored by vnStat
+    $iface_list = array('eth0');
+
+    //
+    // optional names for interfaces
+    // if there's no name set for an interface then the interface identifier
+    // will be displayed instead
+    //
+    $iface_title['eth0'] = 'Internal';
+
+    //
+    // There are two possible sources for vnstat data. If the $vnstat_bin
+    // variable is set then vnstat is called directly from the PHP script
+    // to get the interface data.
+    //
+    // The other option is to periodically dump the vnstat interface data to
+    // a file (e.g. by a cronjob). In that case the $vnstat_bin variable
+    // must be cleared and set $data_dir to the location where the dumps
+    // are stored. Dumps must be named 'vnstat_dump_$iface'.
+    //
+    // You can generate vnstat dumps with the command:
+    //   vnstat --dumpdb -i $iface > /path/to/data_dir/vnstat_dump_$iface
+    //
+    $vnstat_bin = '/usr/bin/vnstat';
+    $data_dir = './dumps';
+
+    // graphics format to use: svg or png
+    $graph_format='svg';
+
+    // preferred byte notation. null auto chooses. otherwise use one of
+    // 'TB','GB','MB','KB'
+    $byte_notation = null;
+
+    // Font to use for PNG graphs
+    define('GRAPH_FONT',dirname(__FILE__).'/VeraBd.ttf');
+
+    // Font to use for SVG graphs
+    define('SVG_FONT', 'Verdana');
+
+    // Default theme
+    define('DEFAULT_COLORSCHEME', 'light');
+    
+    // SVG Depth scaling factor
+    define('SVG_DEPTH_SCALING', 1);
+
+?>"| sudo tee $statusdir/3/config.php
 rm vnstat_php_frontend.zip
 cd /var/www/
 chown -R 33:33 html/
