@@ -4,13 +4,6 @@
 #https://github.com/DASPRiD/vnstat-php
 
 clear
-# root?
-if [ $UID -ne 0 ]; then
-    echo "Install failed: you must be logged in as 'root' to install."
-    echo "Use command 'sudo -i', then enter root password and then try again."
-    exit 1
-fi
-
 # Ensure the OS is compatible with the launcher
 echo -e "\nChecking that minimal requirements are ok"
 if [ -f /etc/centos-release ]; then
@@ -38,6 +31,13 @@ else
     exit 1
 fi
 
+# root?
+if [ $UID -ne 0 ]; then
+    echo "Install failed: you must be logged in as 'root' to install."
+    echo "Use command 'sudo -i', then enter root password and then try again."
+    exit 1
+fi
+
 # User e Password
 echo ""
 echo "@cantalupo555"
@@ -47,6 +47,11 @@ read user
 echo ""
 echo "Enter the password for the user:"
 read pass
+
+extern_ip="$(wget -qO- http://api.sentora.org/ip.txt)"
+#local_ip=$(ifconfig eth0 | sed -En 's|.*inet [^0-9]*(([0-9]*\.){3}[0-9]*).*$|\1|p')
+local_ip=$(ip addr show | awk '$1 == "inet" && $3 == "brd" { sub (/\/.*/,""); print $2 }')
+    PUBLIC_IP=$extern_ip
 
 # Dependencies
 sudo dpkg-reconfigure tzdata
@@ -263,12 +268,12 @@ echo -e '#! /bin/sh\n\n### BEGIN INIT INFO\n# Provides:           unitr\n# Requi
 sudo chmod +x /etc/init.d/unitr&&sudo chmod 777 /etc/init.d/unitr&&update-rc.d unitr defaults
 clear
 echo "Installation Complete"&&echo "By: @cantalupo555"&&echo ""
-echo "ruTorrent: http://IP/rutorrent"
-echo "qBittorrent: http://IP:8080"
-echo "Downloads Web: http://IP/downloads"
-echo "Network Status: http://IP/status"
+echo "ruTorrent: http://$PUBLIC_IP/rutorrent"
+echo "qBittorrent: http://$PUBLIC_IP:8080"
+echo "Downloads Web: http://$PUBLIC_IP/downloads"
+echo "Network Status: http://$PUBLIC_IP/status"
 echo "FTP:"
-echo "Host: IP Port: 21"
+echo "Host: $PUBLIC_IP Port: 21"
 echo "User: $user Password: $pass"
 echo ""
 echo "		Reboot..."
