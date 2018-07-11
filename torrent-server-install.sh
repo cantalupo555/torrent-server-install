@@ -1,7 +1,10 @@
 #!/bin/bash
 # cantalupo555
+#https://rakudave.ch/category/jsvnstat/
+#https://github.com/DASPRiD/vnstat-php
 
 # User e Password
+clear
 echo ""
 echo "@cantalupo555"
 echo ""
@@ -15,8 +18,10 @@ read pass
 sudo dpkg-reconfigure tzdata
 sudo apt-get autoremove -y
 sudo apt-get install software-properties-common -y
-sudo add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y&&sudo apt-get update
-sudo apt-get install proftpd apache2 curl php libapache2-mod-php php-mysql php-curl php-gd php-mbstring php-xml php-xmlrpc rtorrent qbittorrent qbittorrent-nox screen bmon htop make gcc libc6-dev unzip --allow-unauthenticated -y
+sudo add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y
+sudo add-apt-repository ppa:ondrej/apache2 -y
+sudo add-apt-repository ppa:ondrej/php -y&&sudo apt-get update
+sudo apt-get install proftpd apache2 curl php libapache2-mod-php php-mysql php-zip php-intl php-curl php-gd php-mbstring php-xml php-xmlrpc rtorrent qbittorrent qbittorrent-nox screen bmon htop make gcc libc6-dev unzip rar unrar mediainfo --allow-unauthenticated -y
 
 # Config Web
 sudo apache2ctl configtest
@@ -69,7 +74,7 @@ wget http://80.211.146.153/plugins-3.6.tar.gz -O plugins-3.6.tar.gz
 tar -xvf plugins-3.6.tar.gz
 rm plugins-3.6.tar.gz
 cd plugins
-rm -rf mediainfo screenshots unpack
+rm -rf screenshots
 cd ../..
 sudo ln -s /home/rtorrent/Downloads downloads
 
@@ -80,8 +85,6 @@ cd /home/rtorrent/Downloads
 echo -e 'AuthType Basic\nAuthName cantalupo555\nAuthUserFile /home/rtorrent/.htpasswd\nRequire valid-user'| sudo tee .htaccess
 cd /home/rtorrent/
 htpasswd -cb .htpasswd $user $pass
-cd /var/www/
-chown -R 33:33 html/
 
 #vnStat
 cd /usr/src&&wget http://humdi.net/vnstat/vnstat-1.18.tar.gz
@@ -92,17 +95,19 @@ cp -v examples/systemd/vnstat.service /etc/systemd/system/
 systemctl enable vnstat
 systemctl start vnstat
 pgrep -c vnstatd
-mkdir /var/www/html/status
+mkdir /var/www/html/status&&echo -e 'AuthType Basic\nAuthName cantalupo555\nAuthUserFile /home/rtorrent/.htpasswd\nRequire valid-user'| sudo tee .htaccess
 cd ~
-wget http://www.sqweek.com/sqweek/files/vnstat_php_frontend-1.5.1.tar.gz -O vnstat_php_frontend.tar.gz
-tar zxvf vnstat_php_frontend.tar.gz&&mv vnstat_php_frontend-1.5.1/ 1/&&mv 1/ /var/www/html/status/
-rm vnstat_php_frontend.tar.gz
+wget  wget https://sourceforge.net/projects/jsvnstat/files/latest/download -O jsvnstat.zip
+unzip jsvnstat.zip&&mv jsvnstat/ 1/&&mv 1/ /var/www/html/status/
+rm jsvnstat.zip
 wget https://github.com/DASPRiD/vnstat-php/archive/master.zip -O vnStat-PHP.zip
 unzip vnStat-PHP.zip&&mv vnstat-php-master/ 2/&&mv 2/ /var/www/html/status/
 rm vnStat-PHP.zip
-wget  wget https://sourceforge.net/projects/jsvnstat/files/latest/download -O jsvnstat.zip
-unzip jsvnstat.zip&&mv jsvnstat/ 3/&&mv 3/ /var/www/html/status/
-rm jsvnstat.zip
+wget https://github.com/bjd/vnstat-php-frontend/archive/master.zip -O vnstat_php_frontend.zip
+unzip vnstat_php_frontend.zip&&mv vnstat-php-frontend-master/ 3/&&mv 3/ /var/www/html/status/
+rm vnstat_php_frontend.zip
+cd /var/www/
+chown -R 33:33 html/
 
 # Daemon
 cd ~

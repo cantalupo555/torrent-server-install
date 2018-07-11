@@ -13,6 +13,18 @@ sudo apt-get update
 sudo apt-get dist-upgrade -y
 ```
 
+Get the script and make it executable:
+
+```bash
+wget https://raw.githubusercontent.com/cantalupo555/torrent-server-install/master/torrent-server-install.sh
+chmod +x torrent-server-install.sh
+```
+
+Then run it:
+
+`./torrent-server-install.sh`
+
 ## Compatibility
 
-- **Ubuntu 16.04**
+- **Ubuntu 18.04 LTS**
+- **Ubuntu 16.04 LTS**
