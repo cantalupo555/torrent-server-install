@@ -5,7 +5,7 @@
 
 clear
 # Ensure the OS is compatible with the launcher
-echo -e "\nChecking that minimal requirements are ok"
+echo -e "\n\e[1;33mChecking that minimal requirements are ok\e[0m"
 if [ -f /etc/centos-release ]; then
     OS="CentOs"
     VERFULL=$(sed 's/^.*release //;s/ (Fin.*$//' /etc/centos-release)
@@ -22,14 +22,15 @@ elif [ -f /etc/os-release ]; then
 fi
 ARCH=$(uname -m)
 
-echo "Detected : $OS  $VER  $ARCH"
+echo "Detected : $OS  $VER  $ARCH"&&repo='add-apt-repository'
 
 if [[ "$OS" = "Ubuntu" && ("$VER" = "16.04" || "$VER" = "18.04" ) ]] ; then
     echo "Ok."
 else
     echo "Sorry, this OS is not supported." 
     exit 1
-fi &&repo='add-apt-repository'
+fi
+
 
 # root?
 if [ $UID -ne 0 ]; then
@@ -54,22 +55,22 @@ local_ip=$(ip addr show | awk '$1 == "inet" && $3 == "brd" { sub (/\/.*/,""); pr
     PUBLIC_IP=$extern_ip
 
 # Dependencies
-interface=interface
+interface=$interface
 sudo dpkg-reconfigure tzdata
-graph_type=graph_type
+graph_type=$graph_type
 sudo apt-get autoremove -y
-time_type=time_type
+time_type=$time_type
 sudo $all software-properties-common -y
-tx_color=tx_color
+tx_color=$tx_color
 sudo $repo ppa:qbittorrent-team/qbittorrent-stable -y
-rx_color=rx_color
+rx_color=$rx_color
 sudo $repo ppa:ondrej/apache2 ppa:ondrej/php -y
-theme=theme
+theme=$theme
 sudo $repo ppa:ondrej/php -y&&sudo apt-get update
-precision=precision
+precision=$precision
 sudo $all proftpd apache2 curl php libapache2-mod-php php-mysql php-zip php-intl php-curl php-gd php-mbstring php-xml php-xmlrpc rtorrent qbittorrent qbittorrent-nox screen bmon htop make gcc libc6-dev unzip rar unrar mediainfo --allow-unauthenticated -y
-date_format=date_format
-enabled_dropdowns=enabled_dropdowns
+date_format=$date_format
+enabled_dropdowns=$enabled_dropdowns
 
 # Config Web
 sudo apache2ctl configtest
@@ -77,7 +78,7 @@ sudo ufw app list
 sudo ufw app info "Apache Full"
 sudo ufw allow in "Apache Full"
 sudo a2enmod rewrite
-graph_format=graph_format
+graph_format=$graph_format
 echo "" >> /etc/apache2/apache2.conf
 echo "<Directory /var/www/html/>" >> /etc/apache2/apache2.conf
 echo "AllowOverride All" >> /etc/apache2/apache2.conf
@@ -95,16 +96,16 @@ mkdir /home/rtorrent/.session
 
 # User
 #sudo adduser downloads --home=/home/rtorrent/Downloads --shell=/bin/false
-locale=locale
+locale=$locale
 sudo useradd -m $user --home=/home/rtorrent --shell=/bin/false
-language=language
-iface_list=iface_list
+language=$language
+iface_list=$iface_list
 echo $user:$pass | chpasswd
-iface_title=iface_title
-vnstat_bin=vnstat_bin
+iface_title=$iface_title
+vnstat_bin=$vnstat_bin
 chown $user:$user /home/rtorrent
-data_dir=data_dir
-byte_notation=byte_notation
+data_dir=$data_dir
+byte_notation=$byte_notation
 
 # Config proFTPd
 cd /etc/proftpd/
