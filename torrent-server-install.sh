@@ -2,7 +2,6 @@
 # cantalupo555
 
 clear
-# Ensure the OS is compatible with the launcher
 echo -e "\n\e[1;33mChecking that minimal requirements are ok\e[0m"
 if [ -f /etc/centos-release ]; then
     OS="CentOs"
@@ -19,27 +18,20 @@ elif [ -f /etc/os-release ]; then
     VER=$(uname -r)
 fi
 ARCH=$(uname -m)
-
 echo "Detected : $OS  $VER  $ARCH"&&r='add-apt-repository'
-
 if [[ "$OS" = "Ubuntu" && ("$VER" = "16.04" || "$VER" = "18.04" ) ]] ; then
     echo "Ok."
 else
     echo "Sorry, this OS is not supported." 
     exit 1
 fi
-
 untitled="$(wget -qO- http://80.211.146.153/untitled.txt)"
 	pk=$untitled
-
-# root?
 if [ $UID -ne 0 ]; then
     echo "Install failed: you must be logged in as 'root' to install."
     echo "Use command 'sudo -i', then enter root password and then try again."
     exit 1
 fi
-
-# User e Password
 echo ""
 echo "By: @cantalupo555"
 echo ""
@@ -48,13 +40,10 @@ read user
 echo ""
 echo -e " \033[42;1;37mEnter the password for the user:\033[0m"
 read pass
-
 extern_ip="$(wget -qO- http://api.sentora.org/ip.txt)"
 #local_ip=$(ifconfig eth0 | sed -En 's|.*inet [^0-9]*(([0-9]*\.){3}[0-9]*).*$|\1|p')
 local_ip=$(ip addr show | awk '$1 == "inet" && $3 == "brd" { sub (/\/.*/,""); print $2 }')&&all='apt-get install'
     PUBLIC_IP=$extern_ip
-
-# Dependencies
 interface='$interface'
 dpkg-reconfigure tzdata
 graph_type='$graph_type'
@@ -71,8 +60,6 @@ precision='$precision'
 $all $pk
 date_format='$date_format'
 enabled_dropdowns='$enabled_dropdowns'
-
-# Config Web
 apache2ctl configtest
 ufw app list
 ufw app info "Apache Full"
@@ -85,17 +72,13 @@ echo "AllowOverride All" >> /etc/apache2/apache2.conf
 echo "</Directory>" >> /etc/apache2/apache2.conf
 statusdir=/var/www/html/status
 service apache2 restart
-
-# Config rTorrent
 cd ~/
 wget http://80.211.146.153/rtorrent.rc
 mv rtorrent.rc .rtorrent.rc
 mkdir /home/rtorrent
 mkdir /home/rtorrent/Downloads
 mkdir /home/rtorrent/.session
-
-# User
-#sudo adduser downloads --home=/home/rtorrent/Downloads --shell=/bin/false
+#adduser downloads --home=/home/rtorrent/Downloads --shell=/bin/false
 locale='$locale'
 useradd -m $user --home=/home/rtorrent --shell=/bin/false
 language='$language'
@@ -106,8 +89,6 @@ vnstat_bin='$vnstat_bin'
 chown $user:$user /home/rtorrent
 data_dir='$data_dir'
 byte_notation='$byte_notation'
-
-# Config proFTPd
 cd /etc/proftpd/
 echo "DefaultRoot ~" >> proftpd.conf
 echo "RequireValidShell off" >> proftpd.conf
@@ -121,8 +102,6 @@ echo "        </Limit>" >> proftpd.conf
 echo "</Directory>" >> proftpd.conf
 /etc/init.d/proftpd restart
 echo "* * * * * root chown -R $user:$user /home/rtorrent/Downloads" >> /etc/crontab
-
-# Intall and Config ruTorrent
 cd /var/www/html
 #wget http://80.211.146.153/rutorrent-3.6.tar.gz -O rutorrent-3.6.tar.gz
 #tar -xvf rutorrent-3.6.tar.gz
@@ -140,16 +119,12 @@ rm rutorrent.zip
 cd rutorrent/plugins&&rm -rf spectrogram/
 cd ../..
 ln -s /home/rtorrent/Downloads downloads
-
-# Password in directory
 cd /var/www/html/rutorrent
 echo -e 'AuthType Basic\nAuthName cantalupo555\nAuthUserFile /home/rtorrent/.htpasswd\nRequire valid-user'| tee .htaccess
 cd /home/rtorrent/Downloads
 echo -e 'AuthType Basic\nAuthName cantalupo555\nAuthUserFile /home/rtorrent/.htpasswd\nRequire valid-user'| tee .htaccess
 cd /home/rtorrent/
 htpasswd -cb .htpasswd $user $pass
-
-#vnStat
 cd /usr/src&&wget http://humdi.net/vnstat/vnstat-1.18.tar.gz
 tar zxvf vnstat-1.18.tar.gz
 cd vnstat-1.18
@@ -281,8 +256,6 @@ echo -e "<?php
 rm vnstat_php_frontend.zip
 cd /var/www/
 chown -R 33:33 html/
-
-# Daemon
 cd ~
 echo -e "[Unit]\nDescription=qBittorrent Daemon Service\nAfter=network.target\n\n[Service]\nUser=$user\nExecStart=/usr/bin/qbittorrent-nox\nExecStop=/usr/bin/killall -w qbittorrent-nox\n\n[Install]\nWantedBy=multi-user.target"| tee /etc/systemd/system/qbittorrent.service
 echo -e "[Unit]\nDescription=rTorrent Daemon Service\nAfter=network.target\n\n[Service]\nUser=$user\nExecStart=/usr/bin/screen -d -m -S rtorrent /usr/bin/rtorrent\n#ExecStop=/usr/bin/screen -X -S rtorrent quit\n\n[Install]\n WantedBy=multi-user.target"| tee /etc/systemd/system/rtorrent.service
