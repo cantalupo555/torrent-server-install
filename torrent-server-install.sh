@@ -1,7 +1,5 @@
 #!/bin/bash
 # cantalupo555
-#https://rakudave.ch/category/jsvnstat/
-#https://github.com/DASPRiD/vnstat-php
 
 clear
 # Ensure the OS is compatible with the launcher
@@ -156,7 +154,7 @@ mkdir /var/www/html/status&&echo -e 'AuthType Basic\nAuthName cantalupo555\nAuth
 cd ~
 wget  wget https://sourceforge.net/projects/jsvnstat/files/latest/download -O jsvnstat.zip
 unzip jsvnstat.zip&&mv jsvnstat/ 1/&&mv 1/ /var/www/html/status/
-echo -e '<?php
+echo -e "<?php
 	$interface = 'eth0';	    /* Default interface to monitor (e.g. eth0 or wifi0), leave empty for first one */
 	$graph_type = 'lines';	/* Default look of the graph (one of: lines, bars)*/
 	$time_type = 'days';	/* Default time frame (one of: 'hours', 'days', 'months', 'top10') */
@@ -176,7 +174,7 @@ echo -e '<?php
 		'interface' => true,
 		'theme' => true
 	);
-?>'| sudo tee $statusdir/1/settings.php
+?>"| sudo tee $statusdir/1/settings.php
 rm jsvnstat.zip
 wget https://github.com/DASPRiD/vnstat-php/archive/master.zip -O vnStat-PHP.zip
 unzip vnStat-PHP.zip&&mv vnstat-php-master/ 2/&&mv 2/ /var/www/html/status/
@@ -191,7 +189,7 @@ return [
 rm vnStat-PHP.zip
 wget https://github.com/bjd/vnstat-php-frontend/archive/master.zip -O vnstat_php_frontend.zip
 unzip vnstat_php_frontend.zip&&mv vnstat-php-frontend-master/ 3/&&mv 3/ /var/www/html/status/
-echo -e '<?php
+echo -e "<?php
     //
     // vnStat PHP frontend (c)2006-2010 Bjorge Dijkstra (bjd@jooz.net)
     //
@@ -271,7 +269,7 @@ echo -e '<?php
     // SVG Depth scaling factor
     define('SVG_DEPTH_SCALING', 1);
 
-?>'| sudo tee $statusdir/3/config.php
+?>"| sudo tee $statusdir/3/config.php
 rm vnstat_php_frontend.zip
 cd /var/www/
 chown -R 33:33 html/
