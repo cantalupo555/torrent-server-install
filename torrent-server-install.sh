@@ -268,14 +268,15 @@ echo -e '#! /bin/sh\n\n### BEGIN INIT INFO\n# Provides:           unitr\n# Requi
 sudo chmod +x /etc/init.d/unitr&&sudo chmod 777 /etc/init.d/unitr&&update-rc.d unitr defaults
 clear
 echo "Installation Complete"&&echo "By: @cantalupo555"&&echo ""
-echo "############################################"
+echo -e "\e[1;33m############################################\e[0m"
 echo "ruTorrent: http://$PUBLIC_IP/rutorrent"
 echo "qBittorrent: http://$PUBLIC_IP:8080"
+echo "qBittorrent User: admin Password: adminadmin"
 echo "Downloads Web: http://$PUBLIC_IP/downloads"
 echo "Network Status: http://$PUBLIC_IP/status"
-echo "FTP>>> Host: $PUBLIC_IP Port: 21"
+echo "FTP >>> Host: $PUBLIC_IP Port: 21"
 echo "User: $user Password: $pass"
-echo "############################################"
+echo -e "\e[1;33m############################################\e[0m"
 echo ""
 echo "		Reboot..."
 echo "			Reboot..."
