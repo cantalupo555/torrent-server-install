@@ -124,8 +124,18 @@ echo "* * * * * root chown -R $user:$user /home/rtorrent/Downloads" >> /etc/cron
 
 # Intall and Config ruTorrent
 cd /var/www/html
+#wget http://80.211.146.153/rutorrent-3.6.tar.gz -O rutorrent-3.6.tar.gz
+#tar -xvf rutorrent-3.6.tar.gz
+#rm rutorrent-3.6.tar.gz
+#cd rutorrent
+#wget http://80.211.146.153/plugins-3.6.tar.gz -O plugins-3.6.tar.gz
+#tar -xvf plugins-3.6.tar.gz
+#rm plugins-3.6.tar.gz
+#cd plugins
+#rm -rf screenshots
+#cd ../..
 wget https://github.com/Novik/ruTorrent/archive/master.zip -O rutorrent.zip
-unzip rutorrent.zip
+unzip rutorrent.zip&&mv ruTorrent-master/ rutorrent/
 rm rutorrent.zip
 ln -s /home/rtorrent/Downloads downloads
 
@@ -282,7 +292,7 @@ echo -e " \033[44;1;37mInstallation Complete\033[0m"&&echo "By: @cantalupo555"&&
 echo -e "\e[1;33m############################################\e[0m"
 echo -e " \033[44;1;37mruTorrent: http://$PUBLIC_IP/rutorrent\033[0m"
 echo -e " \033[41;1;37mqBittorrent: http://$PUBLIC_IP:8080\033[0m"
-echo -e " \033[44;1;37mBittorrent User: admin Password: adminadmin\033[0m"
+echo -e " \033[44;1;37mqBittorrent User: admin Password: adminadmin\033[0m"
 echo -e " \033[41;1;37mDownloads Web: http://$PUBLIC_IP/downloads\033[0m"
 echo -e " \033[44;1;37mNetwork Status: http://$PUBLIC_IP/status\033[0m"
 echo -e " \033[41;1;37mFTP >>> Host: $PUBLIC_IP Port: 21\033[0m"
