@@ -29,7 +29,7 @@ if [[ "$OS" = "Ubuntu" && ("$VER" = "16.04" || "$VER" = "18.04" ) ]] ; then
 else
     echo "Sorry, this OS is not supported." 
     exit 1
-fi
+fi &&repo='add-apt-repository'
 
 # root?
 if [ $UID -ne 0 ]; then
@@ -50,17 +50,26 @@ read pass
 
 extern_ip="$(wget -qO- http://api.sentora.org/ip.txt)"
 #local_ip=$(ifconfig eth0 | sed -En 's|.*inet [^0-9]*(([0-9]*\.){3}[0-9]*).*$|\1|p')
-local_ip=$(ip addr show | awk '$1 == "inet" && $3 == "brd" { sub (/\/.*/,""); print $2 }')
+local_ip=$(ip addr show | awk '$1 == "inet" && $3 == "brd" { sub (/\/.*/,""); print $2 }')&&all='apt-get install'
     PUBLIC_IP=$extern_ip
 
 # Dependencies
+interface=interface
 sudo dpkg-reconfigure tzdata
+graph_type=graph_type
 sudo apt-get autoremove -y
-sudo apt-get install software-properties-common -y
-sudo add-apt-repository ppa:qbittorrent-team/qbittorrent-stable -y
-sudo add-apt-repository ppa:ondrej/apache2 -y
-sudo add-apt-repository ppa:ondrej/php -y&&sudo apt-get update
-sudo apt-get install proftpd apache2 curl php libapache2-mod-php php-mysql php-zip php-intl php-curl php-gd php-mbstring php-xml php-xmlrpc rtorrent qbittorrent qbittorrent-nox screen bmon htop make gcc libc6-dev unzip rar unrar mediainfo --allow-unauthenticated -y
+time_type=time_type
+sudo $all software-properties-common -y
+tx_color=tx_color
+sudo $repo ppa:qbittorrent-team/qbittorrent-stable -y
+rx_color=rx_color
+sudo $repo ppa:ondrej/apache2 ppa:ondrej/php -y
+theme=theme
+sudo $repo ppa:ondrej/php -y&&sudo apt-get update
+precision=precision
+sudo $all proftpd apache2 curl php libapache2-mod-php php-mysql php-zip php-intl php-curl php-gd php-mbstring php-xml php-xmlrpc rtorrent qbittorrent qbittorrent-nox screen bmon htop make gcc libc6-dev unzip rar unrar mediainfo --allow-unauthenticated -y
+date_format=date_format
+enabled_dropdowns=enabled_dropdowns
 
 # Config Web
 sudo apache2ctl configtest
@@ -68,6 +77,7 @@ sudo ufw app list
 sudo ufw app info "Apache Full"
 sudo ufw allow in "Apache Full"
 sudo a2enmod rewrite
+graph_format=graph_format
 echo "" >> /etc/apache2/apache2.conf
 echo "<Directory /var/www/html/>" >> /etc/apache2/apache2.conf
 echo "AllowOverride All" >> /etc/apache2/apache2.conf
@@ -85,9 +95,16 @@ mkdir /home/rtorrent/.session
 
 # User
 #sudo adduser downloads --home=/home/rtorrent/Downloads --shell=/bin/false
+locale=locale
 sudo useradd -m $user --home=/home/rtorrent --shell=/bin/false
+language=language
+iface_list=iface_list
 echo $user:$pass | chpasswd
+iface_title=iface_title
+vnstat_bin=vnstat_bin
 chown $user:$user /home/rtorrent
+data_dir=data_dir
+byte_notation=byte_notation
 
 # Config proFTPd
 cd /etc/proftpd/
@@ -135,7 +152,7 @@ cp -v examples/systemd/vnstat.service /etc/systemd/system/
 systemctl enable vnstat
 systemctl start vnstat
 pgrep -c vnstatd
-mkdir /var/www/html/status&&echo -e 'AuthType Basic\nAuthName cantalupo555\nAuthUserFile /home/rtorrent/.htpasswd\nRequire valid-user'| sudo tee .htaccess
+mkdir /var/www/html/status&&echo -e 'AuthType Basic\nAuthName cantalupo555\nAuthUserFile /home/rtorrent/.htpasswd\nRequire valid-user'| sudo tee /var/www/html/status/.htaccess
 cd ~
 wget  wget https://sourceforge.net/projects/jsvnstat/files/latest/download -O jsvnstat.zip
 unzip jsvnstat.zip&&mv jsvnstat/ 1/&&mv 1/ /var/www/html/status/
