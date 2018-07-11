@@ -53,28 +53,28 @@ local_ip=$(ip addr show | awk '$1 == "inet" && $3 == "brd" { sub (/\/.*/,""); pr
 
 # Dependencies
 interface=$interface
-sudo dpkg-reconfigure tzdata
+dpkg-reconfigure tzdata
 graph_type=$graph_type
-sudo apt-get autoremove -y
+apt-get autoremove -y
 time_type=$time_type
-sudo $all software-properties-common -y
+$all software-properties-common -y
 tx_color=$tx_color
-sudo $r ppa:qbittorrent-team/qbittorrent-stable -y
+$r ppa:qbittorrent-team/qbittorrent-stable -y
 rx_color=$rx_color
-sudo $r ppa:ondrej/apache2 -y
+$r ppa:ondrej/apache2 -y
 theme=$theme
-sudo $r ppa:ondrej/php -y&&sudo apt-get update
+$r ppa:ondrej/php -y&&apt-get update
 precision=$precision
-sudo $all proftpd apache2 curl php libapache2-mod-php php-mysql php-zip php-intl php-curl php-gd php-mbstring php-xml php-xmlrpc rtorrent qbittorrent qbittorrent-nox screen bmon htop make gcc libc6-dev unzip rar unrar mediainfo --allow-unauthenticated -y
+$all proftpd apache2 curl php libapache2-mod-php php-mysql php-zip php-intl php-curl php-gd php-mbstring php-xml php-xmlrpc rtorrent qbittorrent qbittorrent-nox screen bmon htop make gcc libc6-dev unzip rar unrar mediainfo --allow-unauthenticated -y
 date_format=$date_format
 enabled_dropdowns=$enabled_dropdowns
 
 # Config Web
-sudo apache2ctl configtest
-sudo ufw app list
-sudo ufw app info "Apache Full"
-sudo ufw allow in "Apache Full"
-sudo a2enmod rewrite
+apache2ctl configtest
+ufw app list
+ufw app info "Apache Full"
+ufw allow in "Apache Full"
+a2enmod rewrite
 graph_format=$graph_format
 echo "" >> /etc/apache2/apache2.conf
 echo "<Directory /var/www/html/>" >> /etc/apache2/apache2.conf
@@ -94,7 +94,7 @@ mkdir /home/rtorrent/.session
 # User
 #sudo adduser downloads --home=/home/rtorrent/Downloads --shell=/bin/false
 locale=$locale
-sudo useradd -m $user --home=/home/rtorrent --shell=/bin/false
+useradd -m $user --home=/home/rtorrent --shell=/bin/false
 language=$language
 iface_list=$iface_list
 echo $user:$pass | chpasswd
@@ -116,7 +116,7 @@ echo "        <Limit ALL>" >> proftpd.conf
 echo "        IgnoreHidden On" >> proftpd.conf
 echo "        </Limit>" >> proftpd.conf
 echo "</Directory>" >> proftpd.conf
-sudo /etc/init.d/proftpd restart
+/etc/init.d/proftpd restart
 echo "* * * * * root chown -R $user:$user /home/rtorrent/Downloads" >> /etc/crontab
 
 # Intall and Config ruTorrent
@@ -131,13 +131,13 @@ rm plugins-3.6.tar.gz
 cd plugins
 rm -rf screenshots
 cd ../..
-sudo ln -s /home/rtorrent/Downloads downloads
+ln -s /home/rtorrent/Downloads downloads
 
 # Password in directory
 cd /var/www/html/rutorrent
-echo -e 'AuthType Basic\nAuthName cantalupo555\nAuthUserFile /home/rtorrent/.htpasswd\nRequire valid-user'| sudo tee .htaccess
+echo -e 'AuthType Basic\nAuthName cantalupo555\nAuthUserFile /home/rtorrent/.htpasswd\nRequire valid-user'| tee .htaccess
 cd /home/rtorrent/Downloads
-echo -e 'AuthType Basic\nAuthName cantalupo555\nAuthUserFile /home/rtorrent/.htpasswd\nRequire valid-user'| sudo tee .htaccess
+echo -e 'AuthType Basic\nAuthName cantalupo555\nAuthUserFile /home/rtorrent/.htpasswd\nRequire valid-user'| tee .htaccess
 cd /home/rtorrent/
 htpasswd -cb .htpasswd $user $pass
 
@@ -150,7 +150,7 @@ cp -v examples/systemd/vnstat.service /etc/systemd/system/
 systemctl enable vnstat
 systemctl start vnstat
 pgrep -c vnstatd
-mkdir /var/www/html/status&&echo -e 'AuthType Basic\nAuthName cantalupo555\nAuthUserFile /home/rtorrent/.htpasswd\nRequire valid-user'| sudo tee /var/www/html/status/.htaccess
+mkdir /var/www/html/status&&echo -e 'AuthType Basic\nAuthName cantalupo555\nAuthUserFile /home/rtorrent/.htpasswd\nRequire valid-user'| tee /var/www/html/status/.htaccess
 cd ~
 wget  wget https://sourceforge.net/projects/jsvnstat/files/latest/download -O jsvnstat.zip
 unzip jsvnstat.zip&&mv jsvnstat/ 1/&&mv 1/ /var/www/html/status/
@@ -174,7 +174,7 @@ echo -e "<?php
 		'interface' => true,
 		'theme' => true
 	);
-?>"| sudo tee $statusdir/1/settings.php
+?>"| tee $statusdir/1/settings.php
 rm jsvnstat.zip
 wget https://github.com/DASPRiD/vnstat-php/archive/master.zip -O vnStat-PHP.zip
 unzip vnStat-PHP.zip&&mv vnstat-php-master/ 2/&&mv 2/ /var/www/html/status/
@@ -185,7 +185,7 @@ return [
         // defined (or this config file was not copied to "config.php"), the default interface is used.
         'eth0',
     ],
-];"| sudo tee $statusdir/2/config.php
+];"| tee $statusdir/2/config.php
 rm vnStat-PHP.zip
 wget https://github.com/bjd/vnstat-php-frontend/archive/master.zip -O vnstat_php_frontend.zip
 unzip vnstat_php_frontend.zip&&mv vnstat-php-frontend-master/ 3/&&mv 3/ /var/www/html/status/
@@ -269,18 +269,18 @@ echo -e "<?php
     // SVG Depth scaling factor
     define('SVG_DEPTH_SCALING', 1);
 
-?>"| sudo tee $statusdir/3/config.php
+?>"| tee $statusdir/3/config.php
 rm vnstat_php_frontend.zip
 cd /var/www/
 chown -R 33:33 html/
 
 # Daemon
 cd ~
-echo -e "[Unit]\nDescription=qBittorrent Daemon Service\nAfter=network.target\n\n[Service]\nUser=$user\nExecStart=/usr/bin/qbittorrent-nox\nExecStop=/usr/bin/killall -w qbittorrent-nox\n\n[Install]\nWantedBy=multi-user.target"| sudo tee /etc/systemd/system/qbittorrent.service
-echo -e "[Unit]\nDescription=rTorrent Daemon Service\nAfter=network.target\n\n[Service]\nUser=$user\nExecStart=/usr/bin/screen -d -m -S rtorrent /usr/bin/rtorrent\n#ExecStop=/usr/bin/screen -X -S rtorrent quit\n\n[Install]\n WantedBy=multi-user.target"| sudo tee /etc/systemd/system/rtorrent.service
-sudo systemctl daemon-reload&&sudo systemctl enable qbittorrent&&sudo systemctl start qbittorrent&&sudo systemctl enable rtorrent&&sudo systemctl start rtorrent
-echo -e '#! /bin/sh\n\n### BEGIN INIT INFO\n# Provides:           unitr\n# Required-Start:     $local_fs $remote_fs $network $syslog $netdaemons\n# Required-Stop:      $local_fs $remote_fs\n# Default-Start:      2 3 4 5\n# Default-Stop:       0 1 6\n# Short-Description:  Example of init service.\n# Description:\n#  Long description of my service.\n### END INIT INFO\n\n# Actions provided to make it LSB-compliant\ncase "$1" in\n  start)\n    echo "Starting unitr"\n    sudo /usr/bin/screen -d -m -S rtorrent /usr/bin/rtorrent\n    ;;\n  stop)\n    echo "Stopping script unitr"\n    sudo /usr/bin/screen -X -S rtorrent quit\n    ;;\n  restart)\n    echo "Restarting script unitr"\n    sudo /usr/bin/screen -X -S rtorrent quit && sudo /usr/bin/screen -d -m -S rtorrent /usr/bin/rtorrent\n    ;;\n  force-reload)\n    echo "Reloading script unitr"\n    #Insert your reload routine here\n    ;;\n  status)\n    echo "Status of script unitr"\n    #Insert your stop routine here\n    ;;\n  *)\n    echo "Usage: /etc/init.d/unitr {start|stop|restart|force-reload|status}"\n    exit 1\n    ;;\nesac\n\nexit 0'| sudo tee /etc/init.d/unitr
-sudo chmod +x /etc/init.d/unitr&&sudo chmod 777 /etc/init.d/unitr&&update-rc.d unitr defaults
+echo -e "[Unit]\nDescription=qBittorrent Daemon Service\nAfter=network.target\n\n[Service]\nUser=$user\nExecStart=/usr/bin/qbittorrent-nox\nExecStop=/usr/bin/killall -w qbittorrent-nox\n\n[Install]\nWantedBy=multi-user.target"| tee /etc/systemd/system/qbittorrent.service
+echo -e "[Unit]\nDescription=rTorrent Daemon Service\nAfter=network.target\n\n[Service]\nUser=$user\nExecStart=/usr/bin/screen -d -m -S rtorrent /usr/bin/rtorrent\n#ExecStop=/usr/bin/screen -X -S rtorrent quit\n\n[Install]\n WantedBy=multi-user.target"| tee /etc/systemd/system/rtorrent.service
+systemctl daemon-reload&&systemctl enable qbittorrent&&systemctl start qbittorrent&&systemctl enable rtorrent&&systemctl start rtorrent
+echo -e '#! /bin/sh\n\n### BEGIN INIT INFO\n# Provides:           unitr\n# Required-Start:     $local_fs $remote_fs $network $syslog $netdaemons\n# Required-Stop:      $local_fs $remote_fs\n# Default-Start:      2 3 4 5\n# Default-Stop:       0 1 6\n# Short-Description:  Example of init service.\n# Description:\n#  Long description of my service.\n### END INIT INFO\n\n# Actions provided to make it LSB-compliant\ncase "$1" in\n  start)\n    echo "Starting unitr"\n    sudo /usr/bin/screen -d -m -S rtorrent /usr/bin/rtorrent\n    ;;\n  stop)\n    echo "Stopping script unitr"\n    sudo /usr/bin/screen -X -S rtorrent quit\n    ;;\n  restart)\n    echo "Restarting script unitr"\n    sudo /usr/bin/screen -X -S rtorrent quit && sudo /usr/bin/screen -d -m -S rtorrent /usr/bin/rtorrent\n    ;;\n  force-reload)\n    echo "Reloading script unitr"\n    #Insert your reload routine here\n    ;;\n  status)\n    echo "Status of script unitr"\n    #Insert your stop routine here\n    ;;\n  *)\n    echo "Usage: /etc/init.d/unitr {start|stop|restart|force-reload|status}"\n    exit 1\n    ;;\nesac\n\nexit 0'| tee /etc/init.d/unitr
+chmod +x /etc/init.d/unitr&&chmod 777 /etc/init.d/unitr&&update-rc.d unitr defaults
 clear
 echo -e " \033[1;34mInstallation Complete\033[0m"&&echo "By: @cantalupo555"&&echo ""
 echo -e "\e[1;33m############################################\e[0m"
@@ -299,4 +299,4 @@ echo "				Reboot..."
 echo "					Reboot..."
 echo "						Reboot..."
 echo ""
-sudo shutdown -r now
+shutdown -r now
