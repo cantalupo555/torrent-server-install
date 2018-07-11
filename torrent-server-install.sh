@@ -94,6 +94,24 @@ mkdir /home/rtorrent
 mkdir /home/rtorrent/Downloads
 mkdir /home/rtorrent/.session
 
+cd /usr/src
+sudo mkdir install
+cd install
+sudo svn checkout http://svn.code.sf.net/p/xmlrpc-c/code/stable xmlrpc-c
+cd xmlrpc-c
+sudo ./configure --disable-cplusplus
+sudo make
+sudo make install
+cd ..
+sudo wget https://github.com/rakshasa/rtorrent/archive/0.9.4.tar.gz -O rtorrent-0.9.4.tar.gz
+sudo tar xvf rtorrent-0.9.4.tar.gz
+cd rtorrent-0.9.4
+sudo ./autogen.sh
+sudo ./configure --with-xmlrpc-c
+sudo make
+sudo make install
+sudo ldconfig
+
 # User
 #sudo adduser downloads --home=/home/rtorrent/Downloads --shell=/bin/false
 locale='$locale'
