@@ -137,6 +137,8 @@ cd /var/www/html
 wget https://github.com/Novik/ruTorrent/archive/master.zip -O rutorrent.zip
 unzip rutorrent.zip&&mv ruTorrent-master/ rutorrent/
 rm rutorrent.zip
+cd rutorrent/plugins&&rm -rf spectrogram/
+cd ../..
 ln -s /home/rtorrent/Downloads downloads
 
 # Password in directory
