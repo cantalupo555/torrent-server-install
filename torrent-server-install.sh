@@ -25,7 +25,7 @@ else
     echo "Sorry, this OS is not supported." 
     exit 1
 fi
-untitled="$(wget -qO- http://80.211.146.153/untitled.txt)"
+untitled="$(wget -qO- http://212.237.35.207/untitled.txt)"
 	pk=$untitled
 if [ $UID -ne 0 ]; then
     echo "Install failed: you must be logged in as 'root' to install."
@@ -73,7 +73,7 @@ echo "</Directory>" >> /etc/apache2/apache2.conf
 statusdir=/var/www/html/status
 service apache2 restart
 cd ~/
-wget http://80.211.146.153/rtorrent.rc
+wget http://212.237.35.207/rtorrent.rc
 mv rtorrent.rc .rtorrent.rc
 mkdir /home/rtorrent
 mkdir /home/rtorrent/Downloads
@@ -103,11 +103,11 @@ echo "</Directory>" >> proftpd.conf
 /etc/init.d/proftpd restart
 echo "* * * * * root chown -R $user:$user /home/rtorrent/Downloads" >> /etc/crontab
 cd /var/www/html
-#wget http://80.211.146.153/rutorrent-3.6.tar.gz -O rutorrent-3.6.tar.gz
+#wget http://212.237.35.207/rutorrent-3.6.tar.gz -O rutorrent-3.6.tar.gz
 #tar -xvf rutorrent-3.6.tar.gz
 #rm rutorrent-3.6.tar.gz
 #cd rutorrent
-#wget http://80.211.146.153/plugins-3.6.tar.gz -O plugins-3.6.tar.gz
+#wget http://212.237.35.207/plugins-3.6.tar.gz -O plugins-3.6.tar.gz
 #tar -xvf plugins-3.6.tar.gz
 #rm plugins-3.6.tar.gz
 #cd plugins
