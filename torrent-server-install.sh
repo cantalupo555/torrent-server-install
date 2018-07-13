@@ -215,7 +215,7 @@ echo -e "<?php
     // if there's no name set for an interface then the interface identifier
     // will be displayed instead
     //
-    $iface_title['eth0'] = 'Internal';
+    $iface_title['eth0'] = 'eth0';
 
     //
     // There are two possible sources for vnstat data. If the $vnstat_bin
