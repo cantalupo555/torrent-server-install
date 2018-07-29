@@ -24,6 +24,8 @@ main()
 		;;
 esac
 }
+t_1()
+{
 echo -e "\n\e[1;33mChecking that minimal requirements are ok\e[0m"
 if [ -f /etc/centos-release ]; then
     OS="CentOs"
@@ -303,3 +305,4 @@ echo "					Reboot..."
 echo "						Reboot..."
 echo ""
 shutdown -r now
+}
