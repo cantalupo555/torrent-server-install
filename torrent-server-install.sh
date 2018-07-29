@@ -1,7 +1,29 @@
 #!/bin/bash
 # cantalupo555
-
 clear
+main()
+{
+	echo "   ________________________________________"
+	echo "   |>                                    <|"
+	echo "   |>   Choose an option:                <|"
+	echo "   |>   1 - qBittorrent + ruTorrent      <|"
+	echo "   |>   2 - qBittorrent Only             <|"
+	echo "   |>   3 - ruTorrent Only               <|"
+	echo "   |>____________________________________<|"
+	echo ""
+	read op;
+	case $op in
+		"1")
+			t_1
+		;;
+		"2")
+			t_2
+		;;
+		"3")
+			t_3
+		;;
+esac
+}
 echo -e "\n\e[1;33mChecking that minimal requirements are ok\e[0m"
 if [ -f /etc/centos-release ]; then
     OS="CentOs"
