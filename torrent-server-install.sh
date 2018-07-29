@@ -25,6 +25,7 @@ echo ""
 read op
 case $op in
 1) while true; do
+clear
 echo -e "\n\e[1;33mChecking that minimal requirements are ok\e[0m"
 if [ -f /etc/centos-release ]; then
     OS="CentOs"
@@ -311,6 +312,7 @@ fi
 done
 ;;
 2) while true; do
+clear
 echo -e "\n\e[1;33mChecking that minimal requirements are ok\e[0m"
 if [ -f /etc/centos-release ]; then
     OS="CentOs"
@@ -571,6 +573,7 @@ fi
 done
 ;;
 3) while true; do
+clear
 echo -e "\n\e[1;33mChecking that minimal requirements are ok\e[0m"
 if [ -f /etc/centos-release ]; then
     OS="CentOs"
