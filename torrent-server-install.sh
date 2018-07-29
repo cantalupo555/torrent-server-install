@@ -22,6 +22,8 @@ echo "   |>   3 - ruTorrent Only               <|"
 echo "   |>   4 - Exit                         <|"
 echo "   |>____________________________________<|"
 echo ""
+echo "Select option from 1 to 4:"
+echo ""
 read op
 case $op in
 1) while true; do
