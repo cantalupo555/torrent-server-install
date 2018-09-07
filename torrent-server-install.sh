@@ -142,7 +142,7 @@ cd /var/www/html
 wget https://github.com/Novik/ruTorrent/archive/master.zip -O rutorrent.zip
 unzip rutorrent.zip&&mv ruTorrent-master/ rutorrent/
 rm rutorrent.zip
-cd rutorrent/plugins&&rm -rf spectrogram/
+cd rutorrent/plugins&&rm -rf spectrogram/ unpack/
 cd ../..
 ln -s /home/rtorrent/Downloads downloads
 cd /var/www/html/rutorrent
@@ -689,7 +689,7 @@ cd /var/www/html
 wget https://github.com/Novik/ruTorrent/archive/master.zip -O rutorrent.zip
 unzip rutorrent.zip&&mv ruTorrent-master/ rutorrent/
 rm rutorrent.zip
-cd rutorrent/plugins&&rm -rf spectrogram/
+cd rutorrent/plugins&&rm -rf spectrogram/ unpack/
 cd ../..
 ln -s /home/rtorrent/Downloads downloads
 cd /var/www/html/rutorrent
