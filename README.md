@@ -28,3 +28,6 @@ Then run it:
 
 - **Ubuntu 18.04 LTS**
 - **Ubuntu 16.04 LTS**
+
+
+If you have found a problem, [click here](https://github.com/cantalupo555/torrent-server-install/issues/new).
