@@ -77,7 +77,7 @@ apt-get autoremove -y
 time_type='$time_type'
 $all software-properties-common -y
 tx_color='$tx_color'
-$r ppa:qbittorrent-team/qbittorrent-unstable -y
+$r ppa:qbittorrent-team/qbittorrent-stable -y
 rx_color='$rx_color'
 $r ppa:ondrej/apache2 -y
 theme='$theme'
@@ -364,7 +364,7 @@ apt-get autoremove -y
 time_type='$time_type'
 $all software-properties-common -y
 tx_color='$tx_color'
-$r ppa:qbittorrent-team/qbittorrent-unstable -y
+$r ppa:qbittorrent-team/qbittorrent-stable -y
 rx_color='$rx_color'
 $r ppa:ondrej/apache2 -y
 theme='$theme'
