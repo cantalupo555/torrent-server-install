@@ -23,12 +23,12 @@ directory = /root/Downloads
 # Default session directory. Make sure you don't run multiple instance
 # of rtorrent using the same session directory. Perhaps using a
 # relative path?
-session = /root/Downloads/.session
+session = /root/.session
 #session_save = yes
 
 # Watch a directory for new torrents, and stop those that have been
 # deleted.
-schedule = watch_directory,5,5,load_start=/root/Downloads/watch/*.torrent
+schedule = watch_directory,5,5,load_start=/root/watch/*.torrent
 #schedule = untied_directory,5,5,stop_untied=
 
 # Close torrents when diskspace is low.
