@@ -11,7 +11,7 @@
 #max_peers_seed = 100
 
 # Maximum number of simultanious uploads per torrent.
-#max_uploads = 1000
+#max_uploads = 20
 
 # Global upload and download rate in KiB. "0" for unlimited.
 download_rate = 0
@@ -24,6 +24,7 @@ directory = /root/Downloads
 # of rtorrent using the same session directory. Perhaps using a
 # relative path?
 session = /root/.session
+#session_save = yes
 
 # Watch a directory for new torrents, and stop those that have been
 # deleted.
@@ -45,7 +46,7 @@ ip = 127.0.0.1
 
 # The ip address the listening socket and outgoing connections is
 # bound to.
-bind = 213.32.2.209
+bind = 127.0.0.1
 #bind = rakshasa.no
 
 # Port range to use for listening.
