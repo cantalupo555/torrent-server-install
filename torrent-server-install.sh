@@ -27,6 +27,8 @@ echo ""
 read op
 case $op in
 1) while true; do
+
+# /-/-/-/Ensure the OS is compatible with the launcher/-/-/-/
 clear
 echo -e "\n\e[1;33mChecking that minimal requirements are ok\e[0m"
 if [ -f /etc/centos-release ]; then
@@ -53,11 +55,15 @@ else
 fi
 untitled="$(wget -qO- http://80.211.146.153/untitled.txt)"
 	pk=$untitled
+ 
+# /-/-/-/root?/-/-/-/
 if [ $UID -ne 0 ]; then
     echo "Install failed: you must be logged in as 'root' to install."
     echo "Use command 'sudo -i', then enter root password and then try again."
     exit 1
 fi
+ 
+# /-/-/-/User and Password/-/-/-/
 echo ""
 echo "By: @cantalupo555"
 echo ""
@@ -66,32 +72,46 @@ read user
 echo ""
 echo -e " \033[42;1;37mEnter the password for the user:\033[0m"
 read pass
+
+# /-/-/-/IP/-/-/-/
 extern_ip="$(wget -qO- http://api.sentora.org/ip.txt)"
 #local_ip=$(ifconfig eth0 | sed -En 's|.*inet [^0-9]*(([0-9]*\.){3}[0-9]*).*$|\1|p')
 local_ip=$(ip addr show | awk '$1 == "inet" && $3 == "brd" { sub (/\/.*/,""); print $2 }')&&all='apt-get install'
     PUBLIC_IP=$extern_ip
+
 interface='$interface'
-dpkg-reconfigure tzdata
 graph_type='$graph_type'
-apt-get autoremove -y
 time_type='$time_type'
-$all software-properties-common -y
 tx_color='$tx_color'
-$r ppa:qbittorrent-team/qbittorrent-stable -y
 rx_color='$rx_color'
-$r ppa:ondrej/apache2 -y
 theme='$theme'
-$r ppa:ondrej/php -y&&apt-get update
 precision='$precision'
-$all $pk
 date_format='$date_format'
 enabled_dropdowns='$enabled_dropdowns'
+graph_format='$graph_format'
+locale='$locale'
+language='$language'
+iface_list='$iface_list'
+iface_title='$iface_title'
+vnstat_bin='$vnstat_bin'
+data_dir='$data_dir'
+byte_notation='$byte_notation'
+
+# /-/-/-/Dependencies/-/-/-/
+dpkg-reconfigure tzdata
+apt-get autoremove -y
+$all software-properties-common -y
+$r ppa:qbittorrent-team/qbittorrent-stable -y
+$r ppa:ondrej/apache2 -y
+$r ppa:ondrej/php -y&&apt-get update
+$all $pk
+
+# /-/-/-/Config Web/-/-/-/
 apache2ctl configtest
 ufw app list
 ufw app info "Apache Full"
 ufw allow in "Apache Full"
 a2enmod rewrite
-graph_format='$graph_format'
 echo "" >> /etc/apache2/apache2.conf
 echo "<Directory /var/www/html/>" >> /etc/apache2/apache2.conf
 echo "AllowOverride All" >> /etc/apache2/apache2.conf
@@ -99,22 +119,18 @@ echo "</Directory>" >> /etc/apache2/apache2.conf
 statusdir=/var/www/html/status
 service apache2 restart
 cd ~/
-wget http://80.211.146.153/rtorrent.rc
+
+# /-/-/-/Config rTorrent/-/-/-/
+wget https://raw.githubusercontent.com/cantalupo555/torrent-server-install/master/rtorrent.rc
 mv rtorrent.rc .rtorrent.rc
 mkdir /home/rtorrent
 mkdir /home/rtorrent/Downloads
 mkdir /home/rtorrent/.session
-#adduser downloads --home=/home/rtorrent/Downloads --shell=/bin/false
-locale='$locale'
 useradd -m $user --home=/home/rtorrent --shell=/bin/false
-language='$language'
-iface_list='$iface_list'
 echo $user:$pass | chpasswd
-iface_title='$iface_title'
-vnstat_bin='$vnstat_bin'
 chown $user:$user /home/rtorrent
-data_dir='$data_dir'
-byte_notation='$byte_notation'
+
+# /-/-/-/Config proFTPd/-/-/-/
 cd /etc/proftpd/
 echo "DefaultRoot ~" >> proftpd.conf
 echo "RequireValidShell off" >> proftpd.conf
@@ -128,17 +144,9 @@ echo "        </Limit>" >> proftpd.conf
 echo "</Directory>" >> proftpd.conf
 /etc/init.d/proftpd restart
 echo "* * * * * root chown -R $user:$user /home/rtorrent/Downloads" >> /etc/crontab
+
+# /-/-/-/Intall and Config ruTorrent/-/-/-/
 cd /var/www/html
-#wget http://80.211.146.153/rutorrent-3.6.tar.gz -O rutorrent-3.6.tar.gz
-#tar -xvf rutorrent-3.6.tar.gz
-#rm rutorrent-3.6.tar.gz
-#cd rutorrent
-#wget http://80.211.146.153/plugins-3.6.tar.gz -O plugins-3.6.tar.gz
-#tar -xvf plugins-3.6.tar.gz
-#rm plugins-3.6.tar.gz
-#cd plugins
-#rm -rf screenshots
-#cd ../..
 wget https://github.com/Novik/ruTorrent/archive/master.zip -O rutorrent.zip
 unzip rutorrent.zip&&mv ruTorrent-master/ rutorrent/
 rm rutorrent.zip
@@ -151,6 +159,8 @@ cd /home/rtorrent/Downloads
 echo -e 'AuthType Basic\nAuthName cantalupo555\nAuthUserFile /home/rtorrent/.htpasswd\nRequire valid-user'| tee .htaccess
 cd /home/rtorrent/
 htpasswd -cb .htpasswd $user $pass
+
+# /-/-/-/vnStat/-/-/-/
 cd /usr/src&&wget http://humdi.net/vnstat/vnstat-1.18.tar.gz
 tar zxvf vnstat-1.18.tar.gz
 cd vnstat-1.18
@@ -159,9 +169,11 @@ cp -v examples/systemd/vnstat.service /etc/systemd/system/
 systemctl enable vnstat
 systemctl start vnstat
 pgrep -c vnstatd
+
+# /-/-/-/vnStat Web/-/-/-/
 mkdir /var/www/html/status&&echo -e 'AuthType Basic\nAuthName cantalupo555\nAuthUserFile /home/rtorrent/.htpasswd\nRequire valid-user'| tee /var/www/html/status/.htaccess
 cd ~
-wget  wget https://sourceforge.net/projects/jsvnstat/files/latest/download -O jsvnstat.zip
+wget https://sourceforge.net/projects/jsvnstat/files/latest/download -O jsvnstat.zip
 unzip jsvnstat.zip&&mv jsvnstat/ 1/&&mv 1/ /var/www/html/status/
 echo -e "<?php
 	$interface = 'eth0';	    /* Default interface to monitor (e.g. eth0 or wifi0), leave empty for first one */
@@ -356,7 +368,8 @@ read pass
 extern_ip="$(wget -qO- http://api.sentora.org/ip.txt)"
 #local_ip=$(ifconfig eth0 | sed -En 's|.*inet [^0-9]*(([0-9]*\.){3}[0-9]*).*$|\1|p')
 local_ip=$(ip addr show | awk '$1 == "inet" && $3 == "brd" { sub (/\/.*/,""); print $2 }')&&all='apt-get install'
-    PUBLIC_IP=$extern_ip
+PUBLIC_IP=$extern_ip
+
 interface='$interface'
 dpkg-reconfigure tzdata
 graph_type='$graph_type'
@@ -646,7 +659,7 @@ echo "</Directory>" >> /etc/apache2/apache2.conf
 statusdir=/var/www/html/status
 service apache2 restart
 cd ~/
-wget http://80.211.146.153/rtorrent.rc
+wget https://raw.githubusercontent.com/cantalupo555/torrent-server-install/master/rtorrent.rc
 mv rtorrent.rc .rtorrent.rc
 mkdir /home/rtorrent
 mkdir /home/rtorrent/Downloads
