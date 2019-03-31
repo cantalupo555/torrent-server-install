@@ -79,24 +79,6 @@ extern_ip="$(wget -qO- http://api.sentora.org/ip.txt)"
 local_ip=$(ip addr show | awk '$1 == "inet" && $3 == "brd" { sub (/\/.*/,""); print $2 }')&&all='apt-get install'
     PUBLIC_IP=$extern_ip
 
-interface='$interface'
-graph_type='$graph_type'
-time_type='$time_type'
-tx_color='$tx_color'
-rx_color='$rx_color'
-theme='$theme'
-precision='$precision'
-date_format='$date_format'
-enabled_dropdowns='$enabled_dropdowns'
-graph_format='$graph_format'
-locale='$locale'
-language='$language'
-iface_list='$iface_list'
-iface_title='$iface_title'
-vnstat_bin='$vnstat_bin'
-data_dir='$data_dir'
-byte_notation='$byte_notation'
-
 # /-/-/-/Dependencies/-/-/-/
 dpkg-reconfigure tzdata
 apt-get autoremove -y
