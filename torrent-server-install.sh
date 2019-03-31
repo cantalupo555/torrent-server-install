@@ -104,7 +104,7 @@ $all software-properties-common -y
 $r ppa:qbittorrent-team/qbittorrent-stable -y
 $r ppa:ondrej/apache2 -y
 $r ppa:ondrej/php -y&&apt-get update
-$all $pk
+$all proftpd apache2 curl php libapache2-mod-php php-mysql php-zip php-intl php-curl php-gd php-mbstring php-xml php-xmlrpc rtorrent qbittorrent qbittorrent-nox screen make gcc libc6-dev unzip rar unrar mediainfo --allow-unauthenticated -y
 
 # /-/-/-/Config Web/-/-/-/
 apache2ctl configtest
