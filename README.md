@@ -26,8 +26,17 @@ Then run it:
 
 ## Compatibility
 
-- **Ubuntu 18.04 LTS**
-- **Ubuntu 16.04 LTS**
+The script supports these OS and architectures:
 
+|              | i386 | amd64 | armhf | arm64 |
+| ------------ | ---- | ----- | ----- | ----- |
+|  Arch Linux  |   ❔  |  ❔  |   ❌   |   ❌  |
+|   CentOS 7   |   ❔  |  ❔  |   ❌   |   ❌  |
+|   Debian 8   |   ❔  |  ❔  |   ❌   |   ❌  |
+|   Debian 9   |   ❔  |  ❔  |   ❌   |   ❌  |
+|   Fedora 27  |   ❔  |  ❔  |   ❌   |   ❌  |
+|   Fedora 28  |   ❔  |  ❔  |   ❌   |   ❌  |
+| Ubuntu 16.04 |   ✅  |  ✅  |   ❌   |   ❌  |
+| Ubuntu 18.04 |   ✅  |  ✅  |   ❌   |   ❌  |
 
 If you have found a problem, [click here](https://github.com/cantalupo555/torrent-server-install/issues/new).
