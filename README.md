@@ -4,7 +4,7 @@ With this script you will install:
 - **ruTorrent**
 - **qBittorrent**
 - **proFTPd**
-~~- **vnStat**~~
+- ~~**vnStat**~~
 
 First, update the system:
 
