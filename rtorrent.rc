@@ -41,12 +41,12 @@ schedule = low_diskspace,5,60,close_low_diskspace=100M
 #schedule = ratio,60,60,"stop_on_ratio=200,200M,2000"
 
 # The ip address reported to the tracker.
-ip = 213.32.2.209
+#ip = 213.32.2.209
 #ip = rakshasa.no
 
 # The ip address the listening socket and outgoing connections is
 # bound to.
-bind = 213.32.2.209
+#bind = 213.32.2.209
 #bind = rakshasa.no
 
 # Port range to use for listening.
